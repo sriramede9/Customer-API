@@ -34,13 +34,7 @@ app.get("/api/customer/:id", function(req, res) {
 //handle post request
 
 app.post("/api/customers", (req, res) => {
-  const schema = {
-    name: Joi.string()
-      .min(3)
-      .required()
-  };
-
-  const result = Joi.validate(req.body, schema);
+  const result = validate(req);
 
   if (result.error) {
     res.status(400).send(result.error.details[0].message);
@@ -59,6 +53,45 @@ app.post("/api/customers", (req, res) => {
   res.status(200).send(customer);
 });
 
+//adding put method
+
+app.put("/api/customers/:id", (req, res) => {
+  //look for the course by id
+  const customer = customers.find(c => c.id === parseInt(req.params.id));
+
+  //sending status if no such id
+
+  if (!customer) {
+    res.status(404).send("the customer requested in no longer available");
+  }
+
+  //validate the name
+  const result = validate(req);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
+  //else update name by id
+
+  customer.name = req.body.name;
+
+  //customers[customer.id] = customer;
+
+  res.status(200).send(customer);
+});
+
 const port = process.env.PORT || 3300;
 
 app.listen(port, () => console.log(`listening on port ${port} ...`));
+
+function validate(req) {
+  const schema = {
+    name: Joi.string()
+      .min(3)
+      .required()
+  };
+  const result = Joi.validate(req.body, schema);
+  return result;
+}
