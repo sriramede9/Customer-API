@@ -21,12 +21,13 @@ app.get("/api/customers", function(req, res) {
   res.send(customers);
 });
 
-app.get("/api/customer/:id", function(req, res) {
+app.get("/api/customers/:id", function(req, res) {
   const customer = customers.find(c => c.id === parseInt(req.params.id));
 
-  if (!customer) {
-    res.status(404).send("the customer requested in no longer available");
-  }
+  if (!customer)
+    return res
+      .status(404)
+      .send("the customer requested in no longer available");
 
   res.send(customer);
 });
@@ -36,10 +37,8 @@ app.get("/api/customer/:id", function(req, res) {
 app.post("/api/customers", (req, res) => {
   const result = validate(req);
 
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
-  }
+  if (result.error)
+    return res.status(400).send(result.error.details[0].message);
 
   const customer = {
     id: customers.length + 1,
@@ -62,15 +61,16 @@ app.put("/api/customers/:id", (req, res) => {
   //sending status if no such id
 
   if (!customer) {
-    res.status(404).send("the customer requested in no longer available");
+    return res
+      .status(404)
+      .send("the customer requested in no longer available");
   }
 
   //validate the name
   const result = validate(req);
 
   if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
+    return res.status(400).send(result.error.details[0].message);
   }
 
   //else update name by id
@@ -79,6 +79,21 @@ app.put("/api/customers/:id", (req, res) => {
 
   //customers[customer.id] = customer;
 
+  res.status(200).send(customer);
+});
+
+app.delete("/api/customers/:id", (req, res) => {
+  //find by id
+
+  const customer = customers.find(c => c.id === parseInt(req.params.id));
+
+  if (result.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
+  const customerId = customers.findIndex(customer);
+
+  customers.splice(customerId, 1);
   res.status(200).send(customer);
 });
 
