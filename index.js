@@ -1,17 +1,33 @@
 var express = require("express");
 var app = express();
 
+var logger = require("./logger");
+
 const Joi = require("joi");
 
 //const joi = new Joi();
 
+//middleware
+//checks JSON in response body and attach to req.body
 app.use(express.json());
+
+app.use(logger);
+
+app.use(function(req, res, next) {
+  //another middleware that performs Authentication
+
+  console.log("Authentication ...");
+  next();
+});
 
 const customers = [
   { id: 1, name: "Sri" },
   { id: 2, name: "Sri Ram" },
   { id: 3, name: "Sri Ede" }
 ];
+
+//middleware
+//(req,res) fun is the middleware in this body
 
 app.get("/", (req, res) => {
   res.send("this is test");
