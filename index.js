@@ -15,7 +15,12 @@ app.use(express.json());
 
 app.use(logger);
 
-app.use(morgan("tiny"));
+
+
+if(app.get('env')==="development"){
+  app.use(morgan("tiny"));
+  console.log("we are in dev mode morgan is enabled");
+}
 
 //adding few more middleware functions
 
