@@ -1,0 +1,1 @@
+Hey this is the place where you can access static files.

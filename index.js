@@ -13,6 +13,15 @@ app.use(express.json());
 
 app.use(logger);
 
+//adding few more middleware functions
+
+//accepts key value pairs in post method
+app.use(express.urlencoded({ extended: true }));
+
+//we can access static files as well
+
+app.use(express.static("demo"));
+
 app.use(function(req, res, next) {
   //another middleware that performs Authentication
 
