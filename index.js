@@ -7,6 +7,9 @@ const Joi = require("joi");
 
 const morgan = require("morgan");
 
+const appDebug = require("debug")("app:generalLogging");
+const dbDebug = require("debug")("app:dbLogging");
+
 //const joi = new Joi();
 
 //middleware
@@ -15,11 +18,11 @@ app.use(express.json());
 
 app.use(logger);
 
-
-
-if(app.get('env')==="development"){
+if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("we are in dev mode morgan is enabled");
+  //console.log("we are in dev mode morgan is enabled");
+  appDebug("we are in dev mode morgan is enabled");
+  dbDebug("we are in dev mode morgan is enabled logged by db debug");
 }
 
 //adding few more middleware functions
