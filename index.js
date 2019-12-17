@@ -5,6 +5,8 @@ var logger = require("./logger");
 
 const Joi = require("joi");
 
+const morgan = require("morgan");
+
 //const joi = new Joi();
 
 //middleware
@@ -12,6 +14,8 @@ const Joi = require("joi");
 app.use(express.json());
 
 app.use(logger);
+
+app.use(morgan("tiny"));
 
 //adding few more middleware functions
 
