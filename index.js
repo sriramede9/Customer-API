@@ -18,6 +18,9 @@ app.use(express.json());
 
 app.use(logger);
 
+app.set("view engine", "pug");
+app.set("views", "./views");
+
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   //console.log("we are in dev mode morgan is enabled");
@@ -51,7 +54,11 @@ const customers = [
 //(req,res) fun is the middleware in this body
 
 app.get("/", (req, res) => {
-  res.send("this is test");
+  res.render("index", {
+    title: "User API Express",
+    message: "will give User with rest methods"
+  });
+  // res.send("this is test");
 });
 
 app.get("/api/customers", function(req, res) {
